@@ -1,0 +1,49 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Main Circle -->
+  <circle cx="100" cy="100" r="90" fill="#2C87F0" />
+  <circle cx="100" cy="100" r="80" fill="#1866D0" />
+  
+  <!-- Islamic Geometric Pattern -->
+  <path d="M100 20C138.66 20 170 51.34 170 90C170 128.66 138.66 160 100 160C61.34 160 30 128.66 30 90C30 51.34 61.34 20 100 20Z" 
+        fill="#1551A9" />
+  
+  <!-- Islamic Star Pattern -->
+  <path d="M100 40
+           L115 90
+           L170 90
+           L125 120
+           L140 170
+           L100 140
+           L60 170
+           L75 120
+           L30 90
+           L85 90
+           Z" 
+        fill="#A28958" />
+  
+  <!-- Center Circle -->
+  <circle cx="100" cy="100" r="25" fill="#20B272" />
+  
+  <!-- Hand Icon (representing giving/charity) -->
+  <path d="M90 85 
+           C90 85, 95 75, 100 80
+           C105 85, 110 80, 115 85
+           C120 90, 115 100, 110 105
+           C105 110, 100 115, 95 110
+           C90 105, 85 95, 90 85Z" 
+        fill="white" />
+  
+  <!-- Sound Wave (representing voice-first) -->
+  <path d="M75 95 Q70 100 75 105 M65 90 Q55 100 65 110 M85 95 Q90 100 85 105" 
+        stroke="white" 
+        stroke-width="3" 
+        fill="none" />
+  
+  <!-- Text -->
+  <text x="100" y="180" 
+        text-anchor="middle" 
+        fill="white" 
+        font-family="Arial, sans-serif" 
+        font-weight="bold" 
+        font-size="16">SADAQAPP</text>
+</svg> 
