@@ -1,0 +1,371 @@
+^C
+mkdir -p sadaqapp/src/app/settings
+^C
+^C
+^C
+^C
+^C
+^C
+^C
+'use client';
+
+import React, { useState } from 'react';
+import {
+  Box,
+  Typography,
+  Container,
+  Card,
+  CardContent,
+  Grid,
+  Button,
+  Tabs,
+  Tab,
+  Paper,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Chip
+} from '@mui/material';
+import {
+  School as EducationIcon,
+  Balance as BalanceIcon,
+  AccountBalance as BankIcon,
+  Savings as SavingsIcon,
+  Mosque as MosqueIcon,
+  PlayCircleOutline as PlayIcon,
+  CheckCircle as CheckIcon
+} from '@mui/icons-material';
+import { motion } from 'framer-motion';
+import PageLayout from '@/components/PageLayout';
+import { useVoice } from '@/lib/VoiceContext';
+import styled from '@emotion/styled';
+
+// Styled components
+const EducationHeader = styled(Box)`
+  background: linear-gradient(135deg, #00796b 0%, #004d40 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+`;
+
+const ModuleCard = styled(Card)`
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+`;
+
+const IconWrapper = styled(Box)`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  background-color: ${props => props.bgcolor};
+  color: white;
+`;
+
+const MotionBox = motion(Box);
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`education-tabpanel-${index}`}
+      aria-labelledby={`education-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ pt: 3 }}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
+
+export default function EducationPage() {
+  const { speak } = useVoice();
+  const [tabValue, setTabValue] = useState(0);
+  
+  React.useEffect(() => {
+    speak('Welcome to the financial education page. Here you can learn about Islamic finance principles and basic financial literacy.');
+  }, [speak]);
+  
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+    
+    const tabMessages = [
+      'Showing Islamic finance principles and concepts.',
+      'Showing basic financial literacy resources.',
+    ];
+    
+    speak(tabMessages[newValue]);
+  };
+  
+  // Mock data for educational modules
+  const islamicFinanceModules = [
+    {
+      title: 'Understanding Zakah',
+      description: 'Learn about one of the five pillars of Islam and how it helps purify wealth and support those in need.',
+      icon: <MosqueIcon sx={{ fontSize: 32 }} />,
+      color: '#4caf50',
+      level: 'Beginner',
+      duration: '20 min'
+    },
+    {
+      title: 'Sadaqah: Voluntary Charity',
+      description: 'Explore the concept of voluntary charity in Islam and its spiritual and social benefits.',
+      icon: <BalanceIcon sx={{ fontSize: 32 }} />,
+      color: '#ff9800',
+      level: 'Beginner',
+      duration: '15 min'
+    },
+    {
+      title: 'Riba (Interest) in Islam',
+      description: 'Understand why interest is prohibited in Islamic finance and explore Shariah-compliant alternatives.',
+      icon: <BankIcon sx={{ fontSize: 32 }} />,
+      color: '#f44336',
+      level: 'Intermediate',
+      duration: '30 min'
+    },
+    {
+      title: 'Islamic Banking Principles',
+      description: 'Learn how Islamic banks operate without interest while still providing financial services.',
+      icon: <SavingsIcon sx={{ fontSize: 32 }} />,
+      color: '#2196f3',
+      level: 'Advanced',
+      duration: '45 min'
+    }
+  ];
+  
+  const renderModuleCard = (module: any, index: number) => (
+    <Grid item xs={12} sm={6} md={3} key={index}>
+      <MotionBox
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+        sx={{ height: '100%' }}
+      >
+        <ModuleCard elevation={2}>
+          <CardContent sx={{ display: 'flex', flexDirection: 'column', height: '100%', p: 3 }}>
+            <IconWrapper bgcolor={module.color}>
+              {module.icon}
+            </IconWrapper>
+            
+            <Typography variant="h6" component="h3" gutterBottom>
+              {module.title}
+            </Typography>
+            
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2, flexGrow: 1 }}>
+              {module.description}
+            </Typography>
+            
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Box>
+                <Chip 
+                  label={module.level} 
+                  size="small" 
+                  sx={{ mr: 1, bgcolor: 'rgba(0,0,0,0.05)' }} 
+                />
+                <Chip 
+                  label={module.duration} 
+                  size="small" 
+                  sx={{ bgcolor: 'rgba(0,0,0,0.05)' }} 
+                />
+              </Box>
+              <Button
+                endIcon={<PlayIcon />}
+                onClick={() => speak(`Starting the lesson on ${module.title}`)}
+                sx={{ minWidth: 'auto' }}
+              >
+                Start
+              </Button>
+            </Box>
+          </CardContent>
+        </ModuleCard>
+      </MotionBox>
+    </Grid>
+  );
+
+  return (
+    <PageLayout>
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <MotionBox
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          <EducationHeader>
+            <Typography variant="h3" component="h1" gutterBottom fontWeight="bold">
+              Financial Education
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              Increase your knowledge about Islamic finance and financial literacy
+            </Typography>
+            <Typography variant="body1">
+              Our educational resources are designed to help you understand Shariah-compliant finance
+              principles and develop practical skills for managing your personal finances.
+            </Typography>
+          </EducationHeader>
+        </MotionBox>
+
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs 
+            value={tabValue} 
+            onChange={handleTabChange} 
+            aria-label="education tabs"
+            variant="fullWidth"
+          >
+            <Tab 
+              label="Islamic Finance" 
+              icon={<MosqueIcon />} 
+              iconPosition="start" 
+            />
+            <Tab 
+              label="Financial Literacy" 
+              icon={<SavingsIcon />} 
+              iconPosition="start" 
+            />
+          </Tabs>
+        </Box>
+
+        <TabPanel value={tabValue} index={0}>
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h5" component="h2" gutterBottom>
+              Islamic Finance Principles
+            </Typography>
+            <Typography variant="body1" paragraph>
+              Islamic finance is based on principles derived from the Quran and the Sunnah. These principles
+              promote justice, fairness, and ethics in financial dealings while prohibiting interest (riba),
+              excessive uncertainty (gharar), and gambling (maysir).
+            </Typography>
+          </Box>
+
+          <Grid container spacing={3} sx={{ mb: 5 }}>
+            {islamicFinanceModules.map((module, index) => renderModuleCard(module, index))}
+          </Grid>
+
+          <Paper sx={{ p: 3, mb: 4 }}>
+            <Typography variant="h6" gutterBottom>
+              Core Principles of Islamic Finance
+            </Typography>
+            <List>
+              <ListItem>
+                <ListItemIcon>
+                  <CheckIcon color="primary" />
+                </ListItemIcon>
+                <ListItemText 
+                  primary="Prohibition of Interest (Riba)" 
+                  secondary="Any predetermined payment over and above the actual amount of principal is prohibited." 
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <CheckIcon color="primary" />
+                </ListItemIcon>
+                <ListItemText 
+                  primary="Risk Sharing" 
+                  secondary="Both parties in a financial transaction must share the risks and rewards associated with it." 
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <CheckIcon color="primary" />
+                </ListItemIcon>
+                <ListItemText 
+                  primary="Asset-Backed Financing" 
+                  secondary="Each financial transaction must be tied to a real asset, ensuring a strong link between financial and productive flows." 
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <CheckIcon color="primary" />
+                </ListItemIcon>
+                <ListItemText 
+                  primary="Prohibition of Excessive Uncertainty" 
+                  secondary="Transactions with excessive uncertainty or speculation (gharar) are prohibited." 
+                />
+              </ListItem>
+            </List>
+          </Paper>
+        </TabPanel>
+
+        <TabPanel value={tabValue} index={1}>
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h5" component="h2" gutterBottom>
+              Financial Literacy Resources
+            </Typography>
+            <Typography variant="body1" paragraph>
+              Enhance your financial literacy with our comprehensive resources designed to help you manage your
+              finances effectively while adhering to Islamic principles.
+            </Typography>
+          </Box>
+          
+          <Paper sx={{ p: 3, mb: 4, bgcolor: 'rgba(76, 175, 80, 0.05)' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              <SavingsIcon color="success" sx={{ mr: 1, fontSize: 28 }} />
+              <Typography variant="h6">
+                Budgeting Tips
+              </Typography>
+            </Box>
+            <List>
+              <ListItem>
+                <ListItemIcon>
+                  <CheckIcon color="success" />
+                </ListItemIcon>
+                <ListItemText 
+                  primary="Track your income and expenses" 
+                  secondary="Keep a record of all money coming in and going out to understand your spending patterns." 
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <CheckIcon color="success" />
+                </ListItemIcon>
+                <ListItemText 
+                  primary="Set aside Zakah and Sadaqah first" 
+                  secondary="Incorporate your religious obligations into your budget by setting aside funds for Zakah and Sadaqah." 
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <CheckIcon color="success" />
+                </ListItemIcon>
+                <ListItemText 
+                  primary="Build an emergency fund" 
+                  secondary="Aim to save 3-6 months of living expenses in a Shariah-compliant savings account." 
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <CheckIcon color="success" />
+                </ListItemIcon>
+                <ListItemText 
+                  primary="Avoid debt when possible" 
+                  secondary="Instead of interest-based loans, look for Shariah-compliant financing options when necessary." 
+                />
+              </ListItem>
+            </List>
+          </Paper>
+        </TabPanel>
+      </Container>
+    </PageLayout>
+  );
+} 

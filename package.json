@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
+    "canvas-confetti": "^1.9.2",
     "framer-motion": "^12.6.5",
     "next": "15.3.0",
     "react": "^19.0.0",
