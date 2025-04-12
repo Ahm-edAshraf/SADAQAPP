@@ -13,7 +13,12 @@ export const seedUsers: User[] = [
     aidRequests: [
       {
         id: 'req-1',
-        type: 'Zakah',
+        needType: 'medical',
+        isUrgent: true,
+        monthlyIncome: 800,
+        dependents: 3,
+        hasAssets: false,
+        eligibility: 'zakah',
         amount: 500,
         purpose: 'Medical treatment',
         description: 'Need help with medical bills for my daughter',
@@ -23,7 +28,12 @@ export const seedUsers: User[] = [
       },
       {
         id: 'req-2',
-        type: 'Sadaqah',
+        needType: 'housing',
+        isUrgent: true,
+        monthlyIncome: 800,
+        dependents: 3,
+        hasAssets: false,
+        eligibility: 'both',
         amount: 300,
         purpose: 'Rent assistance',
         description: 'Need help with rent payment for this month',
@@ -43,7 +53,12 @@ export const seedUsers: User[] = [
     aidRequests: [
       {
         id: 'req-3',
-        type: 'Zakah',
+        needType: 'education',
+        isUrgent: false,
+        monthlyIncome: 1200,
+        dependents: 0,
+        hasAssets: false,
+        eligibility: 'zakah',
         amount: 1200,
         purpose: 'Education expenses',
         description: 'Need help with university tuition fees',
@@ -53,7 +68,12 @@ export const seedUsers: User[] = [
       },
       {
         id: 'req-4',
-        type: 'Sadaqah',
+        needType: 'essential',
+        isUrgent: true,
+        monthlyIncome: 1200,
+        dependents: 2,
+        hasAssets: false,
+        eligibility: 'sadaqah',
         amount: 250,
         purpose: 'Food assistance',
         description: 'Need help with groceries for my family',
@@ -63,7 +83,12 @@ export const seedUsers: User[] = [
       },
       {
         id: 'req-5',
-        type: 'Sadaqah',
+        needType: 'essential',
+        isUrgent: true,
+        monthlyIncome: 1200,
+        dependents: 2,
+        hasAssets: false,
+        eligibility: 'sadaqah',
         amount: 400,
         purpose: 'Utility bills',
         description: 'Need help with electricity and water bills',
@@ -86,7 +111,7 @@ export const seedUsers: User[] = [
       {
         id: 'don-1',
         amount: 500,
-        type: 'Zakah',
+        type: 'zakah',
         recipientId: 'ben-1',
         recipientName: 'Ahmed Ali',
         purpose: 'Medical treatment',
@@ -95,7 +120,7 @@ export const seedUsers: User[] = [
       {
         id: 'don-2',
         amount: 1200,
-        type: 'Zakah',
+        type: 'zakah',
         recipientId: 'ben-2',
         recipientName: 'Fatima Rahman',
         purpose: 'Education expenses',
@@ -104,7 +129,7 @@ export const seedUsers: User[] = [
       {
         id: 'don-3',
         amount: 300,
-        type: 'Sadaqah',
+        type: 'sadaqah',
         recipientId: 'ben-3',
         recipientName: 'Ibrahim Hassan',
         purpose: 'Food assistance',
@@ -123,7 +148,7 @@ export const seedUsers: User[] = [
       {
         id: 'don-4',
         amount: 750,
-        type: 'Zakah',
+        type: 'zakah',
         recipientId: 'ben-4',
         recipientName: 'Layla Mahmoud',
         purpose: 'Winter clothing',
@@ -132,13 +157,23 @@ export const seedUsers: User[] = [
       {
         id: 'don-5',
         amount: 1000,
-        type: 'Sadaqah',
+        type: 'sadaqah',
         recipientId: 'ben-5',
         recipientName: 'Yusef Abbas',
         purpose: 'Home repair',
         createdAt: new Date('2023-09-15').toISOString(),
       }
     ]
+  },
+  
+  // Admin account
+  {
+    id: 'adm-1',
+    phoneNumber: '+9876543210',
+    name: 'Admin User',
+    role: 'admin',
+    isVerified: true,
+    createdAt: new Date('2023-01-01').toISOString(),
   }
 ];
 
@@ -167,6 +202,12 @@ export const demoAccounts = [
     name: 'Aisha Yusuf',
     role: 'donor',
     description: 'Donor with larger donations'
+  },
+  {
+    phoneNumber: '+9876543210',
+    name: 'Admin User',
+    role: 'admin',
+    description: 'Administrator with full system access'
   }
 ];
 

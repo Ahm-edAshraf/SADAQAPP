@@ -12,7 +12,17 @@ import {
   Avatar,
   Divider,
   TextField,
-  InputAdornment
+  InputAdornment,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import { 
   Search as SearchIcon,
@@ -105,6 +115,12 @@ export default function DonorDashboard() {
   ];
   
   const [savedRequests, setSavedRequests] = React.useState<string[]>([]);
+  const [donationDialogOpen, setDonationDialogOpen] = React.useState(false);
+  const [selectedRequest, setSelectedRequest] = React.useState<any>(null);
+  const [donationAmount, setDonationAmount] = React.useState<string>('');
+  const [donationType, setDonationType] = React.useState<string>('zakah');
+  const [successMessage, setSuccessMessage] = React.useState<string>('');
+  const [showSuccess, setShowSuccess] = React.useState(false);
   
   const getCategoryIcon = (category: string) => {
     switch(category) {
@@ -131,6 +147,46 @@ export default function DonorDashboard() {
       ? prev.filter(id => id !== requestId) 
       : [...prev, requestId]
     );
+  };
+  
+  const handleDonateClick = (request: any) => {
+    setSelectedRequest(request);
+    setDonationDialogOpen(true);
+    speak(`Donation form for ${request.purpose}. Enter amount and select donation type.`);
+  };
+
+  const handleCloseDonationDialog = () => {
+    setDonationDialogOpen(false);
+    setSelectedRequest(null);
+    setDonationAmount('');
+  };
+
+  const handleDonationSubmit = () => {
+    // In a real app, we would submit the donation to a payment gateway
+    // For our prototype, we'll just show a success message
+    const amountValue = parseFloat(donationAmount);
+    
+    if (!amountValue || amountValue <= 0) {
+      speak('Please enter a valid donation amount.');
+      return;
+    }
+    
+    speak(`Thank you for your ${donationType} donation of $${donationAmount} for ${selectedRequest.purpose}.`);
+    
+    // Close the dialog
+    setDonationDialogOpen(false);
+    
+    // Show success message
+    setSuccessMessage(`Thank you for your ${donationType} donation of $${donationAmount}!`);
+    setShowSuccess(true);
+    
+    // Reset form fields
+    setDonationAmount('');
+    setSelectedRequest(null);
+  };
+
+  const handleCloseSnackbar = () => {
+    setShowSuccess(false);
   };
   
   return (
@@ -244,7 +300,7 @@ export default function DonorDashboard() {
                     <Button 
                       variant="contained" 
                       color="secondary"
-                      onClick={() => speak(`This would open the donation form for ${request.purpose}.`)}
+                      onClick={() => handleDonateClick(request)}
                     >
                       Donate
                     </Button>
@@ -255,6 +311,85 @@ export default function DonorDashboard() {
           ))}
         </Box>
       </MotionBox>
+
+      {/* Donation Dialog */}
+      <Dialog 
+        open={donationDialogOpen} 
+        onClose={handleCloseDonationDialog}
+        aria-labelledby="donation-dialog-title"
+      >
+        <DialogTitle id="donation-dialog-title">
+          Make a Donation
+        </DialogTitle>
+        <DialogContent>
+          {selectedRequest && (
+            <>
+              <Typography variant="h6" gutterBottom>
+                {selectedRequest.purpose}
+              </Typography>
+              <Typography variant="body2" paragraph>
+                {selectedRequest.description}
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+              <Typography variant="body2" paragraph>
+                <strong>Requested:</strong> ${selectedRequest.amount}
+              </Typography>
+              <Typography variant="body2" paragraph>
+                <strong>Still needed:</strong> ${selectedRequest.amount - selectedRequest.fulfilledAmount}
+              </Typography>
+              <Box sx={{ my: 3 }}>
+                <TextField
+                  label="Donation Amount"
+                  variant="outlined"
+                  fullWidth
+                  type="number"
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                  }}
+                  value={donationAmount}
+                  onChange={(e) => setDonationAmount(e.target.value)}
+                  autoFocus
+                  margin="dense"
+                />
+              </Box>
+              <FormControl fullWidth margin="dense">
+                <InputLabel id="donation-type-label">Donation Type</InputLabel>
+                <Select
+                  labelId="donation-type-label"
+                  value={donationType}
+                  label="Donation Type"
+                  onChange={(e) => setDonationType(e.target.value)}
+                >
+                  <MenuItem value="zakah">Zakah</MenuItem>
+                  <MenuItem value="sadaqah">Sadaqah</MenuItem>
+                </Select>
+              </FormControl>
+            </>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDonationDialog}>Cancel</Button>
+          <Button 
+            onClick={handleDonationSubmit} 
+            variant="contained" 
+            color="primary"
+          >
+            Donate Now
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Success Message */}
+      <Snackbar 
+        open={showSuccess} 
+        autoHideDuration={6000} 
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          {successMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 } 

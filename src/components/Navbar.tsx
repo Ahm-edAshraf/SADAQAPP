@@ -32,7 +32,8 @@ import {
   VolumeUp as VolumeUpIcon,
   VolumeMute as VolumeMuteIcon,
   Logout as LogoutIcon,
-  Login as LoginIcon
+  Login as LoginIcon,
+  AdminPanelSettings as AdminPanelSettingsIcon
 } from '@mui/icons-material';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -360,6 +361,15 @@ export default function Navbar() {
           </ListItemIcon>
           Settings
         </MenuItem>
+        
+        {user?.role === 'admin' && (
+          <MenuItem component={Link} href="/admin" onClick={handleUserMenuClose}>
+            <ListItemIcon>
+              <AdminPanelSettingsIcon fontSize="small" />
+            </ListItemIcon>
+            Admin Dashboard
+          </MenuItem>
+        )}
         
         <Divider />
         

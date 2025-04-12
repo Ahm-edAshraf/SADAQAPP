@@ -1,10 +1,17 @@
 export interface AidRequest {
   id: string;
-  type: string;
   amount: number;
   purpose: string;
   description: string;
   status: 'pending' | 'approved' | 'rejected';
+  // Fields for Shariah-based categorization
+  needType: 'essential' | 'education' | 'medical' | 'housing' | 'debt' | 'business' | 'other';
+  isUrgent: boolean;
+  monthlyIncome?: number;
+  dependents?: number;
+  hasAssets?: boolean;
+  // The eligibility type will be determined by the system
+  eligibility?: 'zakah' | 'sadaqah' | 'both';
   createdAt: string;
   updatedAt: string;
 }
@@ -12,7 +19,8 @@ export interface AidRequest {
 export interface Donation {
   id: string;
   amount: number;
-  type: string;
+  // Donors can specify the type of donation
+  type: 'zakah' | 'sadaqah';
   recipientId: string;
   recipientName: string;
   purpose: string;

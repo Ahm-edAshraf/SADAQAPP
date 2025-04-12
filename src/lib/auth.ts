@@ -5,7 +5,7 @@ import { User as UserType } from '@/types/user';
 import { seedUsers, getDemoVerificationCode, getUserByPhone } from './seed';
 
 // Types
-export type UserRole = 'beneficiary' | 'donor' | null;
+export type UserRole = 'beneficiary' | 'donor' | 'admin' | null;
 
 // Simplified User interface used by the auth system
 export interface User {
